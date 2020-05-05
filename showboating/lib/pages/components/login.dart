@@ -7,24 +7,42 @@ class LoginCard extends StatefulWidget {
 }
 
 class _LoginCardState extends State<LoginCard> {
+	TextEditingController _controllerPassword;
+	TextEditingController _controllerUsername;
+	String password = '';
+	String username = '';
+	bool passwordHidden;
 
 	@override
 	void initState() {
 		super.initState();
+		_controllerPassword = TextEditingController();
+		_controllerUsername = TextEditingController();
+		passwordHidden = true;
 	}
 
 	@override
 	void dispose() {
+		_controllerPassword.dispose();
+		_controllerUsername.dispose();
 		super.dispose();
 	}
 	
 	_submitForm(){
 		setState(() {
-			// This call to setState tells the Flutter framework that something has
-			// changed in this State, which causes it to rerun the build method below
-			// so that the display can reflect the updated values. If we changed
-			// _counter without calling setState(), then the build method would not be
-			// called again, and so nothing would appear to happen.
+
+		});
+	}
+
+	_passwordText(passwordValue){
+		setState(() {
+			password = passwordValue;
+		});
+	}
+
+	_usernameText(usernameValue){
+		setState(() {
+			username = usernameValue;
 		});
 	}
 
@@ -40,6 +58,11 @@ class _LoginCardState extends State<LoginCard> {
 					Container(
 						width: 280,
 						child: TextField(
+							controller: _controllerUsername,
+							onSubmitted: (String valueUsername) async{
+								await _usernameText(valueUsername);
+							},
+							// textInputAction: TextInputAction.next,
 							decoration: InputDecoration(
 								labelText: 'Username',
 							)
@@ -49,32 +72,56 @@ class _LoginCardState extends State<LoginCard> {
 					Container(
 						width: 280,
 						child: TextField(
+							controller: _controllerPassword,
+							obscureText: passwordHidden,
+							onSubmitted: (String valuePassword)async{
+								await _passwordText(valuePassword);
+							},
 							decoration: InputDecoration(
-								labelText: 'Password'
-							)
+								labelText: 'Password',
+								suffixIcon: IconButton(
+									onPressed: (){
+										setState(() {
+											passwordHidden = !passwordHidden;
+										});
+									},
+          							icon: Icon(
+										passwordHidden ? Icons.visibility_off : Icons.visibility
+									),
+								),
+							),
 						),
 					),
 
 					Container(
 						height: 40,
 						width: 290,
-						child: FlatButton(
+						child: RaisedButton(
 							onPressed: _submitForm,
 							child: Text(
 								'Log In',
 							),
+							color: Colors.deepPurple,
 						)
 					),
 					Container(
 						height: 60,
 						width: 290,
-						child: FlatButton(
+						child: OutlineButton(
 							onPressed: _submitForm,
 							child: Text(
 								'Sign Up',
 							),
+							color: Colors.deepPurple[400],
 						)
 					),
+					// Container(
+					// 	height: 30,
+					// 	width: 290,
+					// 	child: Text(
+					// 		'username "$username" '
+					// 	)
+					// ),
 				],
 			),
 		);

@@ -4,8 +4,7 @@ import './components/login.dart';
 
 class HomePage extends StatefulWidget {
 
-	final String title = 'Flutter Demo Home Page';
-
+	// final String title = 'Flutter Demo Home Page';
 	@override
 	_HomePageState createState() => _HomePageState();
 }
